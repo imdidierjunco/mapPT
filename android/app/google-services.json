@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "781679643930",
+    "project_id": "flutter-mappt",
+    "storage_bucket": "flutter-mappt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:781679643930:android:8d700a2ce2eba04f30f0a3",
+        "android_client_info": {
+          "package_name": "com.example.mappt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "781679643930-1qtjs5fctbfop1plmcpkoqsm9p0gb069.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMqmKJ4F6HLxbXhPb18L4xD5-R5ZPHFRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "781679643930-1qtjs5fctbfop1plmcpkoqsm9p0gb069.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

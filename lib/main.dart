@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mappt/ui/screens/home.dart';
+import 'package:mappt/ui/screens/inicio.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,11 +11,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomeScreen(),
+    return const MaterialApp(
+      home: InicioScreen(),
     );
   }
 }
