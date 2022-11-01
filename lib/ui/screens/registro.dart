@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mappt/provider/google_sign_in.dart';
+import 'package:mappt/ui/screens/inicio.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/gobal_colors.dart';
 import '../widgets/button.dart';
@@ -40,11 +44,12 @@ class _RegistroScreenState extends State<RegistroScreen> {
     return user;
   }
 
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
     return Scaffold(
       body: SingleChildScrollView(
           child: SafeArea(
@@ -114,7 +119,11 @@ class _RegistroScreenState extends State<RegistroScreen> {
               onPreseed: () {},
               //Registro con Google
               onPreseed1: () {
+                final provider =
+                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.googleLogin();
                 GoogleSignIn().signIn();
+                //Get.to(InicioScreen());
               },
               text: 'O registrate con',
             ),

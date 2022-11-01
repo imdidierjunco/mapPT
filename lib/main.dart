@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mappt/provider/google_sign_in.dart';
 import 'package:mappt/ui/screens/splash.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
