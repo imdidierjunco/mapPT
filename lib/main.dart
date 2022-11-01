@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mappt/ui/screens/home.dart';
-import 'package:mappt/ui/screens/inicio.dart';
+import 'package:get/get.dart';
+import 'package:mappt/ui/screens/splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,8 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: InicioScreen(),
+    return const GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:mappt/ui/screens/login.dart';
+import 'package:mappt/ui/screens/registro.dart';
+
+import 'ingresar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       future: _initializeFirebase(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return const LoginScreen();
+          return const IngresarScreen();
         }
         return const Center(
           child: CircularProgressIndicator(),
