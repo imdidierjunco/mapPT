@@ -12,19 +12,23 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
-      height: 60,
-      decoration: BoxDecoration(
-          color: Colors.blueAccent,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10)
-          ]),
-      child: Text(
-        text,
-        style: const TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-    );
+        alignment: Alignment.center,
+        height: 60,
+        decoration: BoxDecoration(
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10)
+            ]),
+        child: TextButton(
+          onPressed: () {
+            onPreseed();
+          },
+          child: Text(
+            text,
+            style: const TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ));
   }
 }

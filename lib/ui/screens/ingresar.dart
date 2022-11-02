@@ -17,9 +17,6 @@ class IngresarScreen extends StatefulWidget {
 }
 
 class _IngresarScreenState extends State<IngresarScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
   static Future<User?> loginUsingPasswordEmail(
       {required String email,
       required String password,
@@ -38,6 +35,18 @@ class _IngresarScreenState extends State<IngresarScreen> {
     return user;
   }
 
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  void add() {
+    if (_formKey.currentState!.validate()) {
+      final String email = emailController.text;
+      final String password = passwordController.text;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,70 +54,77 @@ class _IngresarScreenState extends State<IngresarScreen> {
           child: SafeArea(
               child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Center(
-              child: Image.asset(
-                'assets/Logo Didier NB.png',
-                width: 250,
-                height: 250,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Center(
+                child: Image.asset(
+                  'assets/Logo Didier NB.png',
+                  width: 250,
+                  height: 250,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Text(
-              'Ingrese a su cuenta',
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  color: GlobalColors.textColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            InputFormWidget(
-              controller: emailController,
-              text: 'E-mail',
-              textInputType: TextInputType.emailAddress,
-              obscure: false,
-              icon: Icons.email,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InputFormWidget(
-              controller: passwordController,
-              text: 'Contraseña',
-              textInputType: TextInputType.text,
-              obscure: true,
-              icon: Icons.password,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            ButtonWidget(
-              text: 'Ingresar',
-              onPreseed: () async {
-                User? user = await loginUsingPasswordEmail(
-                    email: emailController.text,
-                    password: passwordController.text,
-                    context: context);
-                if (user != null) {
-                  Get.to(const InicioScreen());
-                }
-              },
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            SocialLoginWidget(
-              onPreseed: () {},
-              onPreseed1: () {},
-              text: 'O ingresa con',
-            ),
-          ],
+              const SizedBox(
+                height: 50,
+              ),
+              Text(
+                'Ingrese a su cuenta',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: GlobalColors.textColor,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InputFormWidget(
+                controller: emailController,
+                text: 'E-mail',
+                textInputType: TextInputType.emailAddress,
+                obscure: false,
+                icon: Icons.email,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InputFormWidget(
+                controller: passwordController,
+                text: 'Contraseña',
+                textInputType: TextInputType.text,
+                obscure: true,
+                icon: Icons.password,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              ButtonWidget(
+                text: 'Ingresar',
+                onPreseed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    User? user = await loginUsingPasswordEmail(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        context: context);
+                    if (user != null) {
+                      Get.to(() => const InicioScreen());
+                    } else {
+                      Get.to(() => const RegistroScreen());
+                    }
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SocialLoginWidget(
+                onPreseed: () {},
+                onPreseed1: () {},
+                text: 'O ingresa con',
+              ),
+            ],
+          ),
         ),
       ))),
       bottomNavigationBar: Container(
@@ -122,7 +138,7 @@ class _IngresarScreenState extends State<IngresarScreen> {
           ),
           TextButton(
             onPressed: (() {
-              Get.to(const RegistroScreen());
+              Get.to(() => const RegistroScreen());
             }),
             child: const Text(
               '¡Registrate aquí!',

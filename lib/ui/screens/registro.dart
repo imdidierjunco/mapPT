@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,27 +27,19 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 class _RegistroScreenState extends State<RegistroScreen> {
-  static Future<User?> loginUsingPasswordEmail(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-    try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      user = userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-no-found') {
-        print('Usuario existe un usuario registrado con ese correo');
-      }
-    }
-    return user;
-  }
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  void add() {
+    if (_formKey.currentState!.validate()) {
+      final String name = nameController.text;
+      final String email = emailController.text;
+      final String password = passwordController.text;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,79 +48,101 @@ class _RegistroScreenState extends State<RegistroScreen> {
           child: SafeArea(
               child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Center(
-              child: Image.asset(
-                'assets/Logo Didier NB.png',
-                width: 250,
-                height: 250,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Center(
+                child: Image.asset(
+                  'assets/Logo Didier NB.png',
+                  width: 250,
+                  height: 250,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Text(
-              'Crear Cuenta',
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  color: GlobalColors.textColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            InputFormWidget(
-              controller: nameController,
-              text: 'Nombre',
-              textInputType: TextInputType.text,
-              obscure: false,
-              icon: Icons.person,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InputFormWidget(
-              controller: emailController,
-              text: 'E-mail',
-              textInputType: TextInputType.emailAddress,
-              obscure: false,
-              icon: Icons.email,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InputFormWidget(
-              controller: passwordController,
-              text: 'Contraseña',
-              textInputType: TextInputType.text,
-              obscure: true,
-              icon: Icons.password,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            ButtonWidget(
-              text: 'Crear Cuenta',
-              onPreseed: () {},
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            SocialLoginWidget(
-              onPreseed: () {},
-              //Registro con Google
-              onPreseed1: () {
-                final provider =
-                    Provider.of<GoogleSignInProvider>(context, listen: false);
-                provider.googleLogin();
-                GoogleSignIn().signIn();
-                //Get.to(InicioScreen());
-              },
-              text: 'O registrate con',
-            ),
-          ],
+              const SizedBox(
+                height: 50,
+              ),
+              Text(
+                'Crear Cuenta',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: GlobalColors.textColor,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              InputFormWidget(
+                controller: nameController,
+                text: 'Nombre',
+                textInputType: TextInputType.text,
+                obscure: false,
+                icon: Icons.person,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InputFormWidget(
+                controller: emailController,
+                text: 'E-mail',
+                textInputType: TextInputType.emailAddress,
+                obscure: false,
+                icon: Icons.email,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InputFormWidget(
+                controller: passwordController,
+                text: 'Contraseña',
+                textInputType: TextInputType.text,
+                obscure: true,
+                icon: Icons.password,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              ButtonWidget(
+                  text: 'Crear Cuenta',
+                  onPreseed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      const Center(child: CircularProgressIndicator());
+                      FirebaseFirestore.instance
+                          .collection('mappt')
+                          .add({
+                            'name': nameController.text,
+                            'email': emailController.text,
+                            'password': passwordController.text
+                          })
+                          .then((value) => Get.to(() => const InicioScreen()))
+                          .catchError((error) =>
+                              // ignore: invalid_return_type_for_catch_error
+                              print('No se pudo crear el usuario $error'));
+                    }
+                    const Center(
+                        child: Text(
+                      'Llene los campos faltantes',
+                      style: TextStyle(fontWeight: FontWeight.w400),
+                    ));
+                  }),
+              const SizedBox(
+                height: 40,
+              ),
+              SocialLoginWidget(
+                onPreseed: () {},
+                //Registro con Google
+                onPreseed1: () {
+                  // final provider =
+                  //     Provider.of<GoogleSignInProvider>(context, listen: false);
+                  // provider.googleLogin();
+                  // GoogleSignIn().signIn();
+                  //Get.to(InicioScreen());
+                },
+                text: 'O registrate con',
+              ),
+            ],
+          ),
         ),
       ))),
     );
